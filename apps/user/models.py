@@ -1,4 +1,4 @@
-from django.contrib.auth.hashers import make_password
+from oa_v1.helper import make_password
 from django.db import models
 
 
@@ -12,7 +12,7 @@ class LoginUser(models.Model):
                                        auto_now_add=True)
     update_time = models.DateTimeField(verbose_name='更新时间',
                                        auto_now=True)
-    is_activated = models.BooleanField(verbose_name='是否激活', default=False)
+    activated = models.IntegerField(verbose_name='是否激活', choices=((0, '未激活'), (1, '已激活')), default=0)
     note = models.CharField(max_length=50,
                             blank=True,
                             null=True)
@@ -22,8 +22,7 @@ class LoginUser(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        if all((len(self.login_auth_str) < 70,
-                not self.login_auth_str.startswith('pbkdf2_sha256$36000$'))):
+        if len(self.login_auth_str) < 32:
             self.login_auth_str = make_password(self.login_auth_str)
         super().save()
 
