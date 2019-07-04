@@ -1,8 +1,10 @@
 import xadmin as admin
 from xadmin.views import CommAdminView, BaseAdminView
 
-from user.models import LoginUser, UserProfile
+from user.models import LoginUser, UserProfile, UserVideo
 # Register your models here.
+from user.forms import UserVideoForm
+
 
 class GlobalSettings(object):
     # 整体配置
@@ -39,6 +41,14 @@ class UserProfileAdmin():
     list_per_page = 20
 
 
+class UserVideoAdmin():
+    list_display = ["user", 'title', 'video_url']
+    search_fields = ['title']
+    list_per_page = 20
+    form = UserVideoForm
+
+
 admin.site.register(CommAdminView, GlobalSettings)
 admin.site.register(LoginUser, LoginUserAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
+admin.site.register(UserVideo, UserVideoAdmin)

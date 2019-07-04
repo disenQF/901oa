@@ -58,3 +58,23 @@ class UserProfile(models.Model):
         db_table = 'app_user_profile'
         verbose_name = '用户详情'
         verbose_name_plural = verbose_name
+
+
+class UserVideo(models.Model):
+    user = models.ForeignKey(LoginUser,
+                             verbose_name='用户名',
+                             on_delete=models.CASCADE)
+
+    video_url = models.CharField(max_length=200,
+                                 verbose_name='视频下载')
+    title = models.CharField(max_length=200, verbose_name='视频标题')
+    content = models.TextField(verbose_name='内容简介', blank=True, null=True, max_length=400)
+    video_poster = models.CharField(max_length=100, verbose_name='视频封面图片', blank=True, null=True)
+
+    def __str__(self):
+        return self.user.login_name
+
+    class Meta:
+        db_table = 'app_user_video'
+        verbose_name = '用户视频'
+        verbose_name_plural = verbose_name
